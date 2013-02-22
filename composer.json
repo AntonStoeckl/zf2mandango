@@ -1,0 +1,34 @@
+{
+    "name": "AntonStoeckl/zf2mandango",
+    "description": "Extensions and other stuff that makes it easier to use Mandango in an Zend Framework 2 project",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "framework",
+        "zf2",
+        "mongodb",
+        "mandango",
+        "extension"
+    ],
+    "repositories":[
+        {
+            "type": "vcs",
+            "url": "https://github.com/AntonStoeckl/mandango"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/AntonStoeckl/mondator"
+        }
+    ],
+    "minimum-stability":"dev",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*",
+        "antonstoeckl/mondator" : "dev-master",
+        "antonstoeckl/mandango" : "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Zf2mandango": "src"
+        }
+    }
+}
