@@ -41,6 +41,18 @@ class Processor
         };
 
         $this->addParser('php', $arrayParser);
+
+        $xmlParser = function ($file) {
+            $reader = new \Zend\Config\Reader\Xml();
+            $parsedData = $reader->fromFile($file);
+            $docName = $parsedData['document']['name'];
+            unset($parsedData['document']['name']);
+            $parsedData[$docName] = $parsedData['document'];
+            unset($parsedData['document']);
+            return $parsedData;
+        };
+
+        $this->addParser('xml', $xmlParser);
     }
 
     /**

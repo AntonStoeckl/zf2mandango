@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Zf2mandango' => $baseDir . '/src',
     'Zend\\Stdlib\\' => $vendorDir . '/zendframework/zend-stdlib/',
+    'Zend\\Config\\' => $vendorDir . '/zendframework/zend-config/',
     'Twig_' => $vendorDir . '/twig/twig/lib/',
     'Mandango\\Mondator\\' => $vendorDir . '/antonstoeckl/mondator/src/',
     'Mandango\\' => $vendorDir . '/antonstoeckl/mandango/src/',
