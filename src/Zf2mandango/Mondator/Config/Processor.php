@@ -110,8 +110,8 @@ class Processor
             throw new \InvalidArgumentException('Argument "type" is not a scalar');
         }
 
-        if (!is_callable($parser)) {
-            throw new \InvalidArgumentException('Argument "parser" is not a callable');
+        if (!is_callable($parser) && $parser !== false) {
+            throw new \InvalidArgumentException('Argument "parser" is not a callable or "false"');
         }
 
         if (!array_key_exists($type, $this->parsers)) {
@@ -143,7 +143,7 @@ class Processor
     public function getParser($type)
     {
         if (!array_key_exists($type, $this->parsers)) {
-            $this->parsers[$type] = $this->getParserFactory()->getParser($type);
+            $this->addParser($type, $this->getParserFactory()->getParser($type));
         }
 
         return $this->parsers[$type];
