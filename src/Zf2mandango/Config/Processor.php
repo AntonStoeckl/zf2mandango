@@ -21,6 +21,11 @@ class Processor
     protected $parsers = array();
 
     /**
+     * @var \Zf2mandango\Config\ParserFactory
+     */
+    protected $parserFactory;
+
+    /**
      * The constructor
      *
      * @param string $configDir
@@ -28,31 +33,30 @@ class Processor
     public function __construct($configDir)
     {
         $this->configDir = $configDir;
-        $this->addDefaultParsers();
     }
 
     /**
-     * Add the default parser(s)
+     * @param \Zf2mandango\Config\ParserFactory $parserFactory
+     *
+     * @return Processor Fluent interface
      */
-    protected function addDefaultParsers()
+    public function setParserFactory($parserFactory)
     {
-        $arrayParser = function ($file) {
-            return include $file;
-        };
+        $this->parserFactory = $parserFactory;
 
-        $this->addParser('php', $arrayParser);
+        return $this;
+    }
 
-        $xmlParser = function ($file) {
-            $reader = new \Zend\Config\Reader\Xml();
-            $parsedData = $reader->fromFile($file);
-            $docName = $parsedData['document']['name'];
-            unset($parsedData['document']['name']);
-            $parsedData[$docName] = $parsedData['document'];
-            unset($parsedData['document']);
-            return $parsedData;
-        };
+    /**
+     * @return \Zf2mandango\Config\ParserFactory
+     */
+    public function getParserFactory()
+    {
+        if ($this->parserFactory === null) {
+            $this->parserFactory = new ParserFactory();
+        }
 
-        $this->addParser('xml', $xmlParser);
+        return $this->parserFactory;
     }
 
     /**
@@ -71,15 +75,16 @@ class Processor
      * @param string   $type
      * @param callable $parser
      * @return Processor Fluent interface
+     * @throws \InvalidArgumentException
      */
     public function addParser($type, $parser)
     {
         if (!is_scalar($type)) {
-            //todo: exception
+            throw new \InvalidArgumentException('Argument "type" is not a scalar');
         }
 
         if (!is_callable($parser)) {
-            //todo: exception
+            throw new \InvalidArgumentException('Argument "parser" is not a callable');
         }
 
         if (!array_key_exists($type, $this->parsers)) {
@@ -102,6 +107,19 @@ class Processor
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $type
+     * @return callable|boolean|null
+     */
+    public function getParser($type)
+    {
+        if (!array_key_exists($type, $this->parsers)) {
+            $this->parsers[$type] = $this->getParserFactory()->getParser($type);
+        }
+
+        return $this->parsers[$type];
     }
 
     /**
@@ -145,9 +163,12 @@ class Processor
             }
 
             $ext = $fileObject->getExtension();
-            if (array_key_exists($ext, $this->parsers)) {
+
+            $parser = $this->getParser($ext);
+
+            if (is_callable($this->parsers[$ext])) {
                 $filename = $fileObject->__toString();
-                $configItem = $this->parsers[$ext]($filename);
+                $configItem = $parser($filename);
                 $this->config = array_merge($this->config, $configItem);
             }
         }
