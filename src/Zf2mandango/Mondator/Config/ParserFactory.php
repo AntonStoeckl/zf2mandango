@@ -1,11 +1,23 @@
 <?php
+/**
+ * ZF2 Mandango
+ *
+ * @link      hhttps://github.com/AntonStoeckl/zf2mandango for the canonical source repository
+ * @copyright Copyright (c) 2013 Anton Stöckl
+ * @license   MIT License - see bundled LICENSE file
+ */
 
-namespace Zf2mandango\Config;
+namespace Zf2mandango\Mondator\Config;
 
-class ParserFactory
+/**
+ * ParserFactory
+ *
+ * A factory for Mondator config file parsers, which must be callables.
+ */
+class ParserFactory implements ParserFactoryInterface
 {
     /**
-     * The type of the parser to return
+     * Returns a callable config parser or false if no parser for this type is defined
      *
      * @param string $type
      * @return callable|boolean

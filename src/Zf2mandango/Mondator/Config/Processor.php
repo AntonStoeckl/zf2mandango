@@ -1,27 +1,54 @@
 <?php
+/**
+ * ZF2 Mandango
+ *
+ * @link      hhttps://github.com/AntonStoeckl/zf2mandango for the canonical source repository
+ * @copyright Copyright (c) 2013 Anton Stöckl
+ * @license   MIT License - see bundled LICENSE file
+ */
 
-namespace Zf2mandango\Config;
+namespace Zf2mandango\Mondator\Config;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use FilesystemIterator;
 
+/**
+ * Processor
+ *
+ * Processes config files for Mondator to create the document and repository resource classes.
+ * Configs can be in any formats as long as parsers for those formats are injected to the processor,
+ * the parsers must be callables that accept the filename as single parameter.
+ * The mapping from a file to a parser is done via the file extension.
+ * The bundled ParserFactory supports this formats:
+ *   - php (plain array)
+ *   - xml
+ * Any different ParserFactory can also be injected as long as it implements the ParserFactoryInterface.
+ */
 class Processor
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $configDir;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $config = array();
 
-    /** @var \RecursiveIteratorIterator */
+    /**
+     * @var \RecursiveIteratorIterator
+     */
     protected $fileObjects;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $parsers = array();
 
     /**
-     * @var \Zf2mandango\Config\ParserFactory
+     * @var \Zf2mandango\Mondator\Config\ParserFactoryInterface
      */
     protected $parserFactory;
 
@@ -36,7 +63,7 @@ class Processor
     }
 
     /**
-     * @param \Zf2mandango\Config\ParserFactory $parserFactory
+     * @param \Zf2mandango\Mondator\Config\ParserFactoryInterface $parserFactory
      *
      * @return Processor Fluent interface
      */
@@ -48,7 +75,7 @@ class Processor
     }
 
     /**
-     * @return \Zf2mandango\Config\ParserFactory
+     * @return \Zf2mandango\Mondator\Config\ParserFactoryInterface
      */
     public function getParserFactory()
     {
