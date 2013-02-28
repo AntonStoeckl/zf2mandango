@@ -2,7 +2,7 @@
 <?php
 // To use this, copy the file to a 'bin' directory under your module as initMondator.php and make it executable
 // Example: If you follow the standard ZF2 convention and your module is called "Album" the file goes to:
-//          _PROJECT_ROOT_/module/Album/bin/initMandango.php
+//          _PROJECT_ROOT_/module/Album/bin/initMondator.php
 // Your service named "Album/Mondator" must be configured to return the Mondator instance
 
 $moduleName = basename(dirname(__DIR__));
