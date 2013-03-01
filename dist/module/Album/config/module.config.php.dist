@@ -1,0 +1,47 @@
+<?php
+
+// This is a sample module config file to configure Mandango / Mondator for the "Album" module from the ZF2
+// tutorial application.
+// To use it, copy the file to your module root directory as module.config.php
+// Example: If you follow the standard ZF2 convention and your module is called "Album" the file goes to:
+//          _PROJECT_ROOT_/module/Album/config/module.config.php
+// Customize to fit your needs!
+
+return array(
+    'controllers' => array(
+        'invokables' => array(
+            'Album\Controller\Album' => 'Album\Controller\AlbumController',
+        ),
+    ),
+    'router' => array(
+        'routes' => array(
+            'album' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/album[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[a-zA-Z0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Album\Controller\Album',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'view_manager' => array(
+        'template_path_stack' => array(
+            'album' => __DIR__ . '/../view',
+        ),
+    ),
+    'mandango' => array(
+        'cache_dir' => './module/Album/data/cache/mandango',
+        'mondator' => array(
+            'schema_config_dir' => './module/Album/config/schema/mandango',
+            'resources_output_dir' => './module/Album/src/Album/Resource/Mandango',
+        ),
+    ),
+);
+

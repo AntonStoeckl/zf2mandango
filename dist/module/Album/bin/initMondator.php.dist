@@ -1,18 +1,25 @@
 #!/usr/bin/env php
 <?php
-// To use this, copy the file to a 'bin' directory under your module as initMondator.php and make it executable
+
+// To use this, copy the file to a 'bin' directory under your module as initMondator.php and make it executable.
 // Example: If you follow the standard ZF2 convention and your module is called "Album" the file goes to:
 //          _PROJECT_ROOT_/module/Album/bin/initMondator.php
 // Your service named "Album/Mondator" must be configured to return the Mondator instance
+// Customize, if necessary, to fit your needs!
 
+// if this does not work for your module, you can set $moduleName yourself in a different way
 $moduleName = basename(dirname(__DIR__));
 
+// This makes our life easier when dealing with paths. Everything is relative to the application root now.
 chdir(dirname(dirname(dirname(__DIR__))));
 
 // Setup autoloading
 require 'vendor/autoload.php';
 
+// get the Mondator instance
 $initMondatorFactory = new \Zf2mandango\Mondator\Init\Factory();
+
+// process the resource files
 $initMondatorFactory
     ->getInstance($moduleName . '\\Mondator', require 'config/application.config.php')
     ->process()
